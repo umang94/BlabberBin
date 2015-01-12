@@ -29,6 +29,7 @@
 * Learn Javascript
 * Get used to nodejs
 * Get used to socket.io
+* Implement the server in basic socket.io
 * Start implementing xmpp
 
 
