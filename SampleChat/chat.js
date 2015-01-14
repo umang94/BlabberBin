@@ -1,5 +1,5 @@
 var io = require("socket.io");
-var socket = io.listen(1223, "1.2.3.4");
+var socket = io.listen(1223, "localhost");
 var people = {};
 
 socket.on("connection",function(client){
