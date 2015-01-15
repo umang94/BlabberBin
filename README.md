@@ -2,7 +2,6 @@
 
 ### Requirements
 
-* XMPP Chat Server 
 * Node.js based
 * Supports text chat in Browsers
 * Real time communication
@@ -30,6 +29,11 @@
 * Get used to nodejs
 * Get used to socket.io
 * Implement the server in basic socket.io
-* Start implementing xmpp
+* Add basic one - to - one chat initially
+* Add group chat functionality
 
+### Proposed stack 
+
+* Language : Javascript
+* Database : Preferrably mongo-db ( NoSQL db) , Initially redis (may be)
 
