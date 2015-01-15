@@ -10,5 +10,38 @@
 	<!-- Add this later -->
 	<script src="/socket.io/socket.io.js"></script>
 
+	<!-- Add chat functionality -->
+
+	<script>
+		var messageLog = document.getElementById('messageLog');
+		function appendResponse(msg){
+			var msgE1 = document.createElement('div');
+			var textNode = document.createTextNode(msg);
+			msgE1.appendChild(textNode);
+			messageLog.appendChile(msgE1);
+		}
+		//Connecting to the chat server
+		
+		var socket = io.connect('http://localhost:3000');
+
+		//Listen to responses
+
+		socket.on('serverResponse',function(response){
+				appendResponse(response);
+				});
+		// Functionality for sending messages 
+		var inE1 = document.getElementById('messageInput');
+		inE1.onekeydown = function (keyEvent){
+			if(keyEvent.keyCode === 13){
+				var inputValue = inE1.value;
+				socket.emit('clientResponse', inputVal);
+				inE1.value = '';
+				return false;
+			}
+			else
+				return true;
+		}
+	</script>
+
 </body>
 </html>
