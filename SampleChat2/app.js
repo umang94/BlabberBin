@@ -10,6 +10,7 @@ app.get('/',function(req,res){
 });
 
 var usernames = {};
+var id_map = {};
 
 io.sockets.on('connection',function(socket){
 	socket.on('sendchat',function(data){
@@ -18,15 +19,23 @@ io.sockets.on('connection',function(socket){
 	socket.on('adduser',function(username){
 		socket.username = username;
 		usernames[username] = username;
+		id_map[username] = socket;
 		socket.emit("updatechat",'SERVER','you are now connected');
 		socket.broadcast.emit('updatechat','SERVER',username + 'has connected ');
 		io.sockets.emit('updateusers',usernames);
 	});
+
+	socket.on('sendpmessage',function(to,message){
+		console.log("This is working : " + id_map[to].username);
+		console.log(socket.username + " says to " + to + " : " + message );
+	});
+
 	socket.on('disconnect',function(){
 		delete usernames[socket.username];
 		io.sockets.emit('updateusers',usernames);
 		socket.broadcast.emit('updatechat','SERVER',socket.username+'has disconnected');
 
 	});
+
 });
 

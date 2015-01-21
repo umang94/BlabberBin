@@ -26,11 +26,25 @@
 				socket.emit('sendchat',message);
 
 				});
+			$('#pmessage').click(function(){
+				var pmessage = $('#pdata').val();
+				var to = $('#to').val();
+				$('#pdata').val('');
+				
+				socket.emit('sendpmessage',to,pmessage);
+
+				});
 			// For enter key press
 			$('#data').keypress(function(e){
 				if(e.which == 13){
 				$(this).blur();
 				$('#datasend').focus().click();
+				}
+				});
+			$('#pdata').keypress(function(e){
+				if(e.which == 13){
+				$(this).blur();
+				$('#pmessage').focus().click();
 				}
 				});
 			});
@@ -45,4 +59,11 @@
 	<div id="conversation"></div>
 	<input id="data" style="width:200px;" />
 	<input type="button" id="datasend" value="send" />
+</div>
+<div>
+	<b> Personal Message </b>
+	<div id ="pconversation"> </div>
+	<input id="to" style="width:150px"/>
+	<input id="pdata" style="width:200px" />
+	<input type="button" id="pmessage" value="send" />
 </div>
