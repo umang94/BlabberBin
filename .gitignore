@@ -1,2 +1,6 @@
 Testing
-
+SampleChat/node_modules
+SampleChat1/node_modules
+SampleChat2/node_modules
+node_modules
+*.swp
