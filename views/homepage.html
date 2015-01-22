@@ -16,6 +16,14 @@
 				$('#users').append('<div>' + key + '</div>');
 				});
 			});
+	socket.on('updatefriendlist',function(friend_list){
+			$('#friends').empty();
+			console.log(friend_list);
+			for ( key in friend_list)
+			{
+				$('#friends').append('<div>' + friend_list[key]+ '</div>');
+			}
+			});
 	
 	$(function(){
 			//Click Send
@@ -34,6 +42,13 @@
 				socket.emit('sendpmessage',to,pmessage);
 
 				});
+
+			$('#add').click(function(){
+				var friend_name = $('#friend_name').val();
+				
+				socket.emit('subscribe',friend_name);
+
+				});
 			// For enter key press
 			$('#data').keypress(function(e){
 				if(e.which == 13){
@@ -48,11 +63,16 @@
 				}
 				});
 			});
+			
 </script>
 
 <div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
 	<b>USERS</b>
 	<div id="users"></div>
+</div>
+<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+	<b>FRIENDS</b>
+	<div id="friends"></div>
 </div>
 <div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
 	<b> Stream </b>
@@ -66,4 +86,10 @@
 	<input id="to" style="width:150px"/>
 	<input id="pdata" style="width:200px" />
 	<input type="button" id="pmessage" value="send" />
+</div>
+<div>
+	<b> Add Personal friend (SUBSCRIBE to friend) </b>
+	<div id ="add_friend"> </div>
+	<input id="friend_name" style="width:150px"/>
+	<input type="button" id="add" value="Add Friend" />
 </div>

@@ -6,13 +6,29 @@ server.listen(8080);
 
 // Send the index html on request
 app.get('/',function(req,res){
-	res.sendFile(__dirname + 'views/homepage.html');
+	res.sendfile(__dirname + '/views/homepage.html');
 });
 
+var friend_map = {};
+var online_users = {};
 var usernames = {};
 var id_map = {};
 
 io.sockets.on('connection',function(socket){
+
+	socket.on('subscribe',function(friend_name){
+		console.log(socket.username + " wants to add " + friend_name);
+		if (friend_name in usernames)
+		{
+			if (socket.username in friend_map)
+				friend_map[socket.username].push(friend_name);
+			else
+				friend_map[socket.username] = [friend_name];
+		}
+		socket.emit('updatefriendlist',friend_map[socket.username]);
+		console.log(friend_map[socket.username]);
+	});
+
 	socket.on('sendchat',function(data){
 		io.sockets.emit('updatechat',socket.username,data);
 	});
@@ -20,6 +36,7 @@ io.sockets.on('connection',function(socket){
 		socket.username = username;
 		usernames[username] = username;
 		id_map[username] = socket;
+
 		socket.emit("updatechat",'SERVER','you are now connected');
 		socket.broadcast.emit('updatechat','SERVER',username + 'has connected ');
 		io.sockets.emit('updateusers',usernames);
