@@ -6,7 +6,7 @@ server.listen(8080);
 
 // Send the index html on request
 app.get('/',function(req,res){
-	res.sendFile(__dirname + '/index.html');
+	res.sendFile(__dirname + 'views/homepage.html');
 });
 
 var usernames = {};
