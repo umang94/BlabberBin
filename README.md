@@ -19,15 +19,15 @@
 
 ##### Server Side (only)
 
--[] Single Sign on implementation
--[] Chat history, chronological order
--[] Clicking a contact to get
-	-[] Previous chat
-	-[] Focus on new chat message to the selected contact
--[] List of previously contacted people/messages
--[] List of subscribed people
+- [ ] Single Sign on implementation
+- [ ] Chat history, chronological order
+- [ ] Clicking a contact to get
+	- [ ] Previous chat
+	- [ ] Focus on new chat message to the selected contact
+- [ ] List of previously contacted people/messages
+- [ ] List of subscribed people
  
 #### Task List (Sprint 2)
 
--[] "Seen" features
--[] "Last active" feature
+- [ ] "Seen" features
+- [ ] "Last active" feature
