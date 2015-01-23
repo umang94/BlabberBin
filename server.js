@@ -20,12 +20,29 @@ io.sockets.on('connection',function(socket){
 		console.log(socket.username + " wants to add " + friend_name);
 		if (friend_name in usernames)
 		{
-			if (socket.username in friend_map)
-				friend_map[socket.username].push(friend_name);
+			if (socket.username in friend_map) 
+			{	
+				console.log(friend_name)	;
+				if(friend_map[socket.username].indexOf(friend_name) === -1)
+					friend_map[socket.username].push(friend_name);
+				if(! ( friend_name in friend_map ) )
+					friend_map[friend_name] = [socket.username];
+				else
+					friend_map[friend_name].push(socket.username);
+			}
 			else
+			{
 				friend_map[socket.username] = [friend_name];
+				if(! ( friend_name in friend_map ) )
+					friend_map[friend_name] = [socket.username];
+				else
+					friend_map[friend_name].push(socket.username);
+			}
 		}
+		console.log("Current users friends : " + friend_map[socket.username]);
+		console.log("Friends friend list : " + friend_map[friend_name]);
 		socket.emit('updatefriendlist',friend_map[socket.username]);
+		socket.emit('updatefriendlist',friend_map[friend_name]);
 		console.log(friend_map[socket.username]);
 	});
 
@@ -45,6 +62,7 @@ io.sockets.on('connection',function(socket){
 	socket.on('sendpmessage',function(to,message){
 		console.log("This is working : " + id_map[to].username);
 		console.log(socket.username + " says to " + to + " : " + message );
+		id_map[to].emit("updatechat",socket.username,message)
 	});
 
 	socket.on('disconnect',function(){
