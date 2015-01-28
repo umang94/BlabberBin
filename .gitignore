@@ -4,3 +4,4 @@ SampleChat1/node_modules
 SampleChat2/node_modules
 node_modules
 *.swp
+npm-debug.log

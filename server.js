@@ -1,13 +1,39 @@
 var express = require('express')
 var app = express(), http = require('http'), server = http.createServer(app), 
 io = require('socket.io').listen(server);
+var port = process.env.PORT || 8080;
+
+
+var passport = require('passport');
+var flash = require('connect-flash');
+var morgan = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+
+//Configuration
+
+require('./config/passport')(passport);
+
+//Application set up
+
+app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+
 
 server.listen(8080);
 
+console.log(__dirname);
+
+require("./app/routes.js")(app);
+
 // Send the index html on request
-app.get('/',function(req,res){
-	res.sendfile(__dirname + '/views/homepage.html');
-});
+//app.get('/',function(req,res){
+//	res.sendfile(__dirname + '/views/homepage.html');
+//});
 
 var friend_map = {};
 var online_users = {};
