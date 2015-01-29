@@ -22,7 +22,10 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-
+app.use(session({secret: 'umangjain'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 server.listen(8080);
 
