@@ -1,18 +1,26 @@
-var express = require('express')
-var app = express(), http = require('http'), server = http.createServer(app), 
-io = require('socket.io').listen(server);
+var express = require('express');
+// Intialising express app and socket.io listening 
+var app = express(),
+    http = require('http'), 
+    server = http.createServer(app),
+    io = require('socket.io').listen(server);
+
 var port = process.env.PORT || 8080;
 
-
+var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
+
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-//Configuration
+// Making Database connection
+var configDB = require('./config/database.js');
+mongoose.connect(configDB.url);
 
+//Configuration (Supposed to be commented out initially)
 require('./config/passport')(passport);
 
 //Application set up
@@ -21,6 +29,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.set('view engine','ejs');
 
 app.use(session({secret: 'umangjain'}));
 app.use(passport.initialize());
@@ -29,9 +38,13 @@ app.use(flash());
 
 server.listen(8080);
 
-console.log(__dirname);
-
 require("./app/routes.js")(app);
+
+//Launch APP
+
+console.log("BlabberBin will now listen on" + port);
+app.listen(port);
+
 
 // Send the index html on request
 //app.get('/',function(req,res){
