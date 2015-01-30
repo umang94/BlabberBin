@@ -2,8 +2,11 @@
 	"name":"BlabberBin",
 	"description":"A socket.io based chat application",
 	"version":"0.0.1",
+	"main" : "server.js",
 	"dependencies":{
 		"express":"3.x",
+		"ejs" : "~0.8.5",
+		"mongoose" : "~3.8.1",
 		"socket.io":"1.x",
 		"passport" : "x.x",
     		"passport-local" : "~0.1.6",
