@@ -1,15 +1,35 @@
 
-module.exports = function(app){
+module.exports = function(app,passport){
 	// Currently the default page, Needs to be changed soon to incorporate separate pages for 
 	// profile, login and the homepage
 	// PRofile page, login page and homepage will have to created separately in the view also
 	// and havent been created yet
+
+	// Homepage with the logi links
+
 	app.get('/',function(req,res){
-		res.sendfile('views/homepage.html');
+		res.render('index.ejs');
 	});
+	
+	// Login page
+	
+	app.get('/login',function(req,res){
+		res.render('login.ejs',{message : req.flash('loginMessage')});
+	});
+	
+	// Showing the signup form and passing in any flash messages if they are there
+	
+	app.get('/signup',function(req,res){
+		res.render('signup.ejs',{message: req.flash('signupMessage')});
+	});
+
+	// Processing the sign up form to happen here 
+	// Passport to be used here
+	// app.post('/signup',do all our passport stuff here )
+
 	// Profile Page
 	app.get('/profile',isLoggedIn, function(req,res){
-		res.sendfile('views/profile.html');
+		res.renderfile('profile.ejs', {user : req.user});
 		// Could be a .ejs file also
 	});
 
@@ -28,13 +48,12 @@ module.exports = function(app){
 	
 	// Send to facebook to do the authentication
 	
-	app.get('/auth/facebook',passport.authenticate('facebook',{scope : 'email'}));
-	app.get('auth/facebook/callback',
-		passport.authenticate('facebook',{
-			successRedirect : '/profile',
-			failureRedirect : '/'
-		}));
-
+//	app.get('/auth/facebook',passport.authenticate('facebook',{scope : 'email'}));
+//	app.get('auth/facebook/callback',
+//		passport.authenticate('facebook',{
+//			successRedirect : '/profile',
+//			failureRedirect : '/'
+//		}));
 }
 
 // Add Authorize part (Already Logged in / Connecting Other Social Account Part)
