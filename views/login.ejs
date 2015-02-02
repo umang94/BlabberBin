@@ -1,0 +1,24 @@
+<!-- views/login.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title> BlabberBin login portal </title>
+</head>
+<body>
+	<h1> Login </h1>
+	<% if(message.length > 0) {%>
+		<%= message %>
+	<% } %>
+<form action="/login" method="post">
+<label> Email </label>
+<input type='text' name='email'>
+<label> Password </label>
+<button type="submit"> Login </button>
+</form>
+
+<hr>
+
+<p> Need an account? <a href='/signup'> Signup </a></p>
+
+</body>
+</html>
