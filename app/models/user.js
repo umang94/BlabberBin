@@ -15,7 +15,7 @@ var UserSchema = mongoose.Schema({
     		token : String,
     		email : String,
     		name : String,
-	}
+	},
 	twitter : {
 		id : String,
     		token : String,
@@ -31,12 +31,12 @@ var UserSchema = mongoose.Schema({
 });
 
 UserSchema.methods.generateHash = function(password){
-	return bycrypt.hashSync(password,bcrypt.genSaltSync(8), null)'
+	return bycrypt.hashSync(password,bcrypt.genSaltSync(8), null);
 };
 
-userSchema.methods.validPassword = function(password) {
+UserSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password,this.local.password);
 };
 
 // Creating the model for Users and exposing it to the rest of the app
-module.exports = mongoose.model('User',userSchema);
+module.exports = mongoose.model('User',UserSchema);

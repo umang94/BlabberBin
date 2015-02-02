@@ -14,7 +14,7 @@ module.exports = function(passport){
 	// passport needs ability to serialise and unserialise users out of session
 	passport.serializeUser(function(user,done){
 		done(null,user.id);
-	}):
+	});
 	passport.deserializeUser(function(id,done){
 		User.findById(id,function(err,user){
 			done(err,user);
@@ -107,13 +107,13 @@ module.exports = function(passport){
 
 
 	// Facebook Login functions 
-	
+	/**
 	passport.use(new FacebookStrategy({
 		clientID : configAuth.facebookAuth.clientID,
 		clientSecret : configAuth.facebookAuth.clientSecret,
 		callbackURL : configAuth.facebookAuth.callbackURL,
 		passReqToCallback : true
-	}, function(req, token , refreshTokenm profile, done){
+	}, function(req, token , refreshToken profile, done){
 		
 		//Ascynchronous 
 
@@ -144,6 +144,7 @@ module.exports = function(passport){
 			}
 		});
 	}));
+	**/
 
 
 };
