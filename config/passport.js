@@ -6,6 +6,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var User = require('../app/models/user');
 
+// Loading up the use model
 var configAuth = require('./auth');
 
 module.exports = function(passport){
@@ -54,32 +55,32 @@ module.exports = function(passport){
 		if (email)
 			email = email.toLowerCase();
 		process.nextTick(function(){
-			if(!req.user){
-				User.findone({'local-email' : email},function(err,user){
-					if(err)
-						return done(err);
-					if(user)
-						return done(null, false, req.flash('signupMessage', 'That email has already been taken'));
-					else
-					{
-						var newUser = new User();
-						newUser.local.email = email;
-						newUser.local.password = newUser.generateHash(password);
-						newUser.save(function(err){
-							if(err)
-								return done(err);
-							return done(null,newUser);
-						});
-					}
-				
+			User.findone({'local-email' : email},function(err,user){
+			if(err)
+				return done(err);
+			if(user)
+				return done(null, false, req.flash('signupMessage', 'That email has already been taken'));
+			else
+			{
+				var newUser = new User();
+				newUser.local.email = email;
+				newUser.local.password = newUser.generateHash(password);
+				newUser.save(function(err){
+				if(err)
+					return done(err);
+				return done(null,newUser);
 				});
 			}
+				
+		});
+			
 			//If the user is logged in but has no local account ..
-			else if( !req.user.local.email) 
-			{
-				User.findOne({'local.email' : email}, function(err,user){
-					if(err)
-						return done(err);
+	/**
+		else if( !req.user.local.email) 
+		{
+			User.findOne({'local.email' : email}, function(err,user){
+			if(err)
+				return done(err);
 					if(user)
 						return done(null, false, req.flash('loginMessage', 'That email is already taken. '  ));
 					else
@@ -94,11 +95,12 @@ module.exports = function(passport){
 						});
 					}
 				});
-			}
-			else{
+		}
+		else{
 				// user is logged in and already has a local account. Ignore signup. You should log before trying to create a new account, user! )
 				return done(null, req.user);
-			}
+		}
+		**/
 		});
 	}));
 
