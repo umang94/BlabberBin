@@ -21,27 +21,22 @@ module.exports = function(passport){
 		});
 	});
 
-	// Local Login ( No idea why coding this up right now)
-	
+// Local Strategy to be used for local login	
 	passport.use('local-login',new LocalStrategy({
 		usernameField : 'email',
-		passwordField : 'passport',
+		passwordField : 'password',
 		passReqToCallback : true // allows us to pass in the req from our route
 	}, function(req, email, password, done){
-		if(email)
-			email = email.toLowerCase();
-		process.nextTick(function(){
-			User.findOne({'local.email' : email}, function(err,user){
-				if(err)
-					return done(err);
-				if(!user)
-					return done(null. false. req.flash('loginMessage', 'No user found'));
-				if(! !user.validPassword(password))
-					return done(null, false, req.flash('loginMessage','Oops! Wrong Password. '));
-				else
-					return done(null, user);
+		User.findOne({'local.email' : email}, function(err,user){
+			if(err)
+				return done(err);
+			if(!user)
+				return done(null, false. req.flash('loginMessage', 'No user found'));
+			if(!user.validPassword(password))
+				return done(null, false,req.flash('loginMessage','Wrong Password.'));
+			else
+				return done(null, user);
 			});
-		});
 	}));
 	
 
@@ -54,54 +49,25 @@ module.exports = function(passport){
 	},function(req,email,password,done){
 		if (email)
 			email = email.toLowerCase();
-		process.nextTick(function(){
-			User.findone({'local-email' : email},function(err,user){
+		User.findOne({'local.email' : email},function(err,user){
+		if(err)
+			return done(err);
+		if(user)
+			return done(null, false, req.flash('signupMessage', 'That email has already been taken'));
+		else
+		{
+			var newUser = new User();
+			newUser.local.email = email;
+			newUser.local.password = newUser.generateHash(password);
+			newUser.save(function(err){
 			if(err)
 				return done(err);
-			if(user)
-				return done(null, false, req.flash('signupMessage', 'That email has already been taken'));
-			else
-			{
-				var newUser = new User();
-				newUser.local.email = email;
-				newUser.local.password = newUser.generateHash(password);
-				newUser.save(function(err){
-				if(err)
-					return done(err);
-				return done(null,newUser);
-				});
-			}
+			return done(null,newUser);
+			});
+		}
 				
 		});
 			
-			//If the user is logged in but has no local account ..
-	/**
-		else if( !req.user.local.email) 
-		{
-			User.findOne({'local.email' : email}, function(err,user){
-			if(err)
-				return done(err);
-					if(user)
-						return done(null, false, req.flash('loginMessage', 'That email is already taken. '  ));
-					else
-					{
-						var user = req.user;
-						user.local.email = email;
-						user.local.password = user.generateHash(password);
-						user.save(function (err){
-							if(err)
-								return done(err);
-							return done(null,user);
-						});
-					}
-				});
-		}
-		else{
-				// user is logged in and already has a local account. Ignore signup. You should log before trying to create a new account, user! )
-				return done(null, req.user);
-		}
-		**/
-		});
 	}));
 
 

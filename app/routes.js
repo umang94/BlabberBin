@@ -14,9 +14,16 @@ module.exports = function(app,passport){
 	// Login page
 	
 	app.get('/login',function(req,res){
+		console.log("Requesting app.get ");
 		res.render('login.ejs',{message : req.flash('loginMessage')});
 	});
 	
+	app.post('/login', passport.authenticate('local-login',{
+		successRedirect : '/profile',
+		failureRedirect : '/login',
+		failureFlash : true
+
+	}));
 	// Showing the signup form and passing in any flash messages if they are there
 	
 	app.get('/signup',function(req,res){
@@ -33,14 +40,14 @@ module.exports = function(app,passport){
 
 	// Profile Page
 	app.get('/profile',isLoggedIn, function(req,res){
-		res.renderfile('profile.ejs', {user : req.user});
+		res.render('profile.ejs', {user : req.user});
 		// Could be a .ejs file also
 	});
 
 	// Logout Page
 	
 	app.get('/logout',function(req,res){
-		res.logout();
+		req.logout();
 		res.redirect('/');
 	});
 	
