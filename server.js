@@ -5,7 +5,7 @@ var app = express(),
     server = http.createServer(app),
     io = require('socket.io').listen(server);
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8000;
 
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -38,11 +38,11 @@ app.use(flash());
 
 server.listen(8080);
 
-require("./app/routes.js")(app);
+require("./app/routes.js")(app,passport);
 
 //Launch APP
 
-console.log("BlabberBin will now listen on" + port);
+console.log("BlabberBin will now listen on " + port);
 app.listen(port);
 
 
@@ -50,7 +50,7 @@ app.listen(port);
 //app.get('/',function(req,res){
 //	res.sendfile(__dirname + '/views/homepage.html');
 //});
-
+/**
 var friend_map = {};
 var online_users = {};
 var usernames = {};
@@ -115,4 +115,4 @@ io.sockets.on('connection',function(socket){
 	});
 
 });
-
+**/
