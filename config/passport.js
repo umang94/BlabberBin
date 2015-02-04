@@ -21,6 +21,41 @@ module.exports = function(passport){
 		});
 	});
 
+	// O auth login via facebook strategy 
+	
+	passport.use(new FacebookStrategy({
+
+		clientID : configAuth.facebookAuth.clientID,
+		clientSecret : configAuth.facebookAuth.clientSecret,
+		callbackURL : configAuth.facebookAuth.callbackURL
+	},
+	function(token, refreshToken, profile, done){
+		
+		//This makes it asynchrnous 
+		process.nextTick(function(){
+			User.findone({'facebook.id' : profile.id}, function(err,user){
+				if(err)
+					return done(err);
+				if(user)
+					return done(null,user);
+				else{
+					// The case wherein a new faebook user logs in
+					var newUser = new User();
+					newUser.facebook.id = profile.id;
+					newUser.facebook.token = token;
+					newUser.facebok.name = profile.name.givenName + ' ' + profile.name.familyName;
+					newUser.facebook.email = profile.emails[0].value;
+					
+					newUser.save(function(err){
+						if(err)
+							throw err;
+						return done(null,newUser);
+					});
+				}
+			});
+		});
+	}));
+
 // Local Strategy to be used for local login	
 	passport.use('local-login',new LocalStrategy({
 		usernameField : 'email',
