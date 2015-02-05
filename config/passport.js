@@ -33,7 +33,7 @@ module.exports = function(passport){
 		
 		//This makes it asynchrnous 
 		process.nextTick(function(){
-			User.findone({'facebook.id' : profile.id}, function(err,user){
+			User.findOne({'facebook.id' : profile.id}, function(err,user){
 				if(err)
 					return done(err);
 				if(user)
@@ -43,7 +43,7 @@ module.exports = function(passport){
 					var newUser = new User();
 					newUser.facebook.id = profile.id;
 					newUser.facebook.token = token;
-					newUser.facebok.name = profile.name.givenName + ' ' + profile.name.familyName;
+					newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
 					newUser.facebook.email = profile.emails[0].value;
 					
 					newUser.save(function(err){
