@@ -19,7 +19,7 @@
 
 ##### Server Side (only)
 
-- [ ] Single Sign on implementation
+- [x] Single Sign, OAuth (Facebook) on implementation
 - [ ] Chat history, chronological order
 - [ ] Clicking a contact to get
 	- [ ] Previous chat
