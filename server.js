@@ -1,9 +1,7 @@
 var express = require('express');
 // Intialising express app and socket.io listening 
 var app = express(),
-    http = require('http'), 
-    server = http.createServer(app),
-    io = require('socket.io').listen(server);
+    http = require('http'); 
 
 var port = process.env.PORT || 8000;
 
@@ -36,16 +34,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-server.listen(8080);
 
 require("./app/routes.js")(app,passport);
 
 //Launch APP
 
 console.log("BlabberBin will now listen on " + port);
-app.listen(port);
 
-
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+server.listen(port);
 // Send the index html on request
 //app.get('/',function(req,res){
 //	res.sendfile(__dirname + '/views/homepage.html');
