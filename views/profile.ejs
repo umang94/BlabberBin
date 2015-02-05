@@ -14,8 +14,8 @@
 <p>
 
 	<strong> id </strong> : <%= user._id %><br>
-	<strong> email </strong> : <%= user.local.email %> <br>
-	<strong> password </strong> : <%= user.local.password %>
+	<strong> email </strong> : <%= user.local.email || user.facebook.email %> <br>
+	<strong> password </strong> : <%= user.local.password || user.facebook.name %>
 </p>
 </body>
 </html>
