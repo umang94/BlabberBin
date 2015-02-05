@@ -17,5 +17,112 @@
 	<strong> email </strong> : <%= user.local.email || user.facebook.email %> <br>
 	<strong> password </strong> : <%= user.local.password || user.facebook.name %>
 </p>
+
+<script src='/socket.io/socket.io.js/'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script>
+	var socket = io.connect('http://localhost:8080');
+
+	socket.on('connect',function(){
+			
+			var name = user._id;
+			socket.emit('adduser', name);
+			$('#username').append('<h3>' + name + '</h3>')	;
+
+			});
+	socket.on('updatechat',function(username,data){
+			$('#conversation').append('<b>'+username+':</b>'+data+'<br>');
+
+			});
+	socket.on('updateusers',function(data){
+			$('#users').empty();
+			$.each(data,function(key,value){
+				$('#users').append('<div>' + key + '</div>');
+				});
+			});
+	socket.on('updatefriendlist',function(friend_list){
+			$('#friends').empty();
+			console.log(friend_list);
+			for ( key in friend_list)
+			{
+				$('#friends').append('<div>' + friend_list[key]+ '</div>');
+			}
+			});
+
+	$(function(){
+			//Click Send
+			$('#datasend').click(function() {
+				var message = $('#data').val();
+				$('#data').val('');
+				
+				socket.emit('sendchat',message);
+
+				});
+			$('#pmessage').click(function(){
+				var pmessage = $('#pdata').val();
+				var to = $('#to').val();
+				$('#pdata').val('');
+				
+				socket.emit('sendpmessage',to,pmessage);
+
+				});
+
+			$('#add').click(function(){
+				var friend_name = $('#friend_name').val();
+				
+				socket.emit('subscribe',friend_name);
+
+				});
+			// For enter key press
+			$('#data').keypress(function(e){
+				if(e.which == 13){
+				$(this).blur();
+				$('#datasend').focus().click();
+				}
+				});
+			$('#pdata').keypress(function(e){
+				if(e.which == 13){
+				$(this).blur();
+				$('#pmessage').focus().click();
+				}
+				});
+			});
+			
+</script>
+
+<div id="username">
+  <%= user.name %>
+</div>
+
+<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+	<b>USERS</b>
+	<div id="users"></div>
+</div>
+<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+	<b>FRIENDS</b>
+	<div id="friends"></div>
+</div>
+<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+	<b> Stream </b>
+	<div id="conversation"></div>
+	<input id="data" style="width:200px;" />
+	<input type="button" id="datasend" value="send" />
+</div>
+<div>
+	<b> Personal Message </b>
+	<div id ="pconversation"> </div>
+	<input id="to" style="width:150px"/>
+	<input id="pdata" style="width:200px" />
+	<input type="button" id="pmessage" value="send" />
+</div>
+<div>
+	<b> Add Personal friend (SUBSCRIBE to friend) </b>
+	<div id ="add_friend"> </div>
+	<input id="friend_name" style="width:150px"/>
+	<input type="button" id="add" value="Add Friend" />
+</div>
+
+
+
 </body>
 </html>
