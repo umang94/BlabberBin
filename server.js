@@ -48,14 +48,13 @@ server.listen(port);
 //app.get('/',function(req,res){
 //	res.sendfile(__dirname + '/views/homepage.html');
 //});
-/**
 var friend_map = {};
 var online_users = {};
 var usernames = {};
 var id_map = {};
 
 io.sockets.on('connection',function(socket){
-
+	console.log("New connection Dectected");
 	socket.on('subscribe',function(friend_name){
 		console.log(socket.username + " wants to add " + friend_name);
 		if (friend_name in usernames)
@@ -87,9 +86,11 @@ io.sockets.on('connection',function(socket){
 	});
 
 	socket.on('sendchat',function(data){
+		console.log('Send Chat EVENT');
 		io.sockets.emit('updatechat',socket.username,data);
 	});
 	socket.on('adduser',function(username){
+		console.log("ADD user event");
 		socket.username = username;
 		usernames[username] = username;
 		id_map[username] = socket;
@@ -100,12 +101,14 @@ io.sockets.on('connection',function(socket){
 	});
 
 	socket.on('sendpmessage',function(to,message){
+		console.log("Personal Message event");
 		console.log("This is working : " + id_map[to].username);
 		console.log(socket.username + " says to " + to + " : " + message );
 		id_map[to].emit("updatechat",socket.username,message)
 	});
 
 	socket.on('disconnect',function(){
+		console.log("Dosconnect Event");
 		delete usernames[socket.username];
 		io.sockets.emit('updateusers',usernames);
 		socket.broadcast.emit('updatechat','SERVER',socket.username+'has disconnected');
@@ -113,4 +116,3 @@ io.sockets.on('connection',function(socket){
 	});
 
 });
-**/
