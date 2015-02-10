@@ -13,19 +13,19 @@
 
 <p>
 
-	<strong> id </strong> : <%= user._id %><br>
-	<strong> email </strong> : <%= user.local.email || user.facebook.email %> <br>
+	<strong> id </strong> :<span id="user_name"> <%= user._id %> </span><br>
+	<strong> email </strong> :<span id="email"> <%= user.local.email || user.facebook.email %> </span> <br>
 	<strong> password </strong> : <%= user.local.password || user.facebook.name %>
 </p>
 
 <script src='/socket.io/socket.io.js/'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script>
-	var socket = io.connect('http://localhost:8080');
+	var socket = io.connect('http://localhost:8000');
 
 	socket.on('connect',function(){
 			
-			var name = user._id;
+			var name = $('#email').text() ;
 			socket.emit('adduser', name);
 			$('#username').append('<h3>' + name + '</h3>')	;
 
