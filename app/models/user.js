@@ -9,6 +9,10 @@ var UserSchema = mongoose.Schema({
 	local : {
 		email : String,
     		password : String,
+    		conversations : {
+			Friend_ID : ObjectId,
+    			Recent_Convo_ID : ObjectId
+		}
 	},
     	facebook : {
 		id : String,
@@ -29,6 +33,7 @@ var UserSchema = mongoose.Schema({
 		name : String
 	}
 });
+
 
 UserSchema.methods.generateHash = function(password){
 	return bcrypt.hashSync(password,bcrypt.genSaltSync(8), null);
