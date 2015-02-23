@@ -1,7 +1,7 @@
 // Loading mongoose
 
 var mongoose = require('mongoose');
-
+var ObjectId = mongoose.Schema.Types.ObjectId;
 // Conversation Schema
 
 var ConversationSchema = mongoose.Schema({
@@ -13,3 +13,5 @@ var ConversationSchema = mongoose.Schema({
     	Next : ObjectId,
     	Previous : ObjectId
 }); 
+
+module.exports = mongoose.model('Converstation', ConversationSchema);

@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
-
+var ObjectId = mongoose.Schema.Types.ObjectId;
 // User Schema for the the user model, only for local and facebook login as of now
 
 var UserSchema = mongoose.Schema({
