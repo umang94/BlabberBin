@@ -48,6 +48,11 @@ server.listen(port);
 //app.get('/',function(req,res){
 //	res.sendfile(__dirname + '/views/homepage.html');
 //});
+
+
+var Conversation = require('./app/models/conversations');
+
+
 var friend_map = {};
 var online_users = {};
 var usernames = {};
@@ -87,6 +92,8 @@ io.sockets.on('connection',function(socket){
 
 	socket.on('sendchat',function(data){
 		console.log('Send Chat EVENT');
+		console.log(Date.now());
+		console.log(data);
 		io.sockets.emit('updatechat',socket.username,data);
 	});
 	socket.on('adduser',function(username){
